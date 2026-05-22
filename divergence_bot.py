@@ -141,7 +141,7 @@ MACD_SLOW   = 26
 MACD_SIGNAL = 9
 
 # Поиск экстремумов — окно (свечей с каждой стороны)
-PIVOT_ORDER = 5
+PIVOT_ORDER = 3
 
 # Интервал сканирования в секундах
 SCAN_INTERVAL = {
@@ -212,7 +212,7 @@ def find_divergences(df: pd.DataFrame) -> list[dict]:
         common_lows = sorted(set(price_lows) & set(ind_lows))
         for i in range(1, len(common_lows)):
             i1, i2 = common_lows[i - 1], common_lows[i]
-            if i2 - i1 < PIVOT_ORDER * 2:
+            if i2 - i1 < PIVOT_ORDER:
                 continue
             price_down = close.iloc[i2] < close.iloc[i1]
             ind_up     = ind.iloc[i2]   > ind.iloc[i1]
