@@ -128,7 +128,7 @@ SYMBOLS = [
     "VINE/USDT",
 ]
 
-TIMEFRAMES = ["15m", "1h", "4h"]
+TIMEFRAMES = ["1h"]
 
 # RSI
 RSI_PERIOD  = 14
@@ -307,7 +307,7 @@ async def scan(bot: Bot):
                 except Exception as e:
                     log.warning(f"Ошибка {symbol} {tf}: {e}")
 
-                await asyncio.sleep(0.3)  # rate limit
+                await asyncio.sleep(0.1)  # rate limit
 
     finally:
         await exchange.close()
