@@ -18,8 +18,8 @@ from scipy.signal import argrelextrema
 # ─────────────────────────────────────────
 #  КОНФИГ
 # ─────────────────────────────────────────
-TELEGRAM_TOKEN = "YOUR_BOT_TOKEN"
-CHAT_ID        = "YOUR_CHAT_ID"
+TELEGRAM_TOKEN = "8872323280:AAEzjvk6CuA96Bu28KjuC6aPotmZr5Th3Jk"
+CHAT_ID        = "153405810"
 
 SYMBOLS = [
     "BTC/USDT",
