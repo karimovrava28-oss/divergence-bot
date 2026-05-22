@@ -11,7 +11,7 @@ import ccxt.async_support as ccxt
 import pandas as pd
 import pandas_ta as ta
 import numpy as np
-from telegram import Bot
+from telegram import Bot, Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 from scipy.signal import argrelextrema
 
@@ -262,8 +262,17 @@ def main():
     app.add_handler(CommandHandler("scan",    cmd_scan))
     app.add_handler(CommandHandler("symbols", cmd_symbols))
 
-    loop = asyncio.get_event_loop()
-    loop.create_task(background_scanner(app))
+    async def post_init(application):
+        asyncio.create_task(background_scanner(application))
+
+    app.post_init = post_init
+
+    log.info("🚀 Бот запущен")
+    app.run_polling(allowed_updates=Update.ALL_TYPES)
+
+
+if __name__ == "__main__":
+    main()
 
     log.info("🚀 Бот запущен")
     app.run_polling()
