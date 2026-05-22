@@ -18,10 +18,10 @@ from scipy.signal import argrelextrema
 # ─────────────────────────────────────────
 #  КОНФИГ
 # ─────────────────────────────────────────
-TELEGRAM_TOKEN = "8872323280:AAEzjvk6CuA96Bu28KjuC6aPotmZr5Th3Jk"
-CHAT_ID        = "153405810"
+TELEGRAM_TOKEN = "YOUR_BOT_TOKEN"
+CHAT_ID        = "YOUR_CHAT_ID"
 
-SYMBOLS = [
+SYMBOLS = [SYMBOLS = [
     "BTC/USDT",
     "ETH/USDT",
     "BNB/USDT",
@@ -127,8 +127,9 @@ SYMBOLS = [
     "MELANIA/USDT",
     "VINE/USDT",
 ]
+    "
 
-TIMEFRAMES = ["1h"]
+TIMEFRAMES = ["15m", "1h", "4h"]
 
 # RSI
 RSI_PERIOD  = 14
@@ -141,7 +142,7 @@ MACD_SLOW   = 26
 MACD_SIGNAL = 9
 
 # Поиск экстремумов — окно (свечей с каждой стороны)
-PIVOT_ORDER = 3
+PIVOT_ORDER = 5
 
 # Интервал сканирования в секундах
 SCAN_INTERVAL = {
@@ -212,7 +213,7 @@ def find_divergences(df: pd.DataFrame) -> list[dict]:
         common_lows = sorted(set(price_lows) & set(ind_lows))
         for i in range(1, len(common_lows)):
             i1, i2 = common_lows[i - 1], common_lows[i]
-            if i2 - i1 < PIVOT_ORDER:
+            if i2 - i1 < PIVOT_ORDER * 2:
                 continue
             price_down = close.iloc[i2] < close.iloc[i1]
             ind_up     = ind.iloc[i2]   > ind.iloc[i1]
@@ -298,7 +299,7 @@ async def scan(bot: Bot):
                             continue
 
                         # Отправляем только если дивер на последних 3 барах
-                        if sig["bar_idx"] >= len(df) - 10:
+                        if sig["bar_idx"] >= len(df) - 3:
                             text = format_signal(symbol, tf, sig, df)
                             await bot.send_message(chat_id=CHAT_ID, text=text)
                             sent_signals.add(key)
@@ -307,7 +308,7 @@ async def scan(bot: Bot):
                 except Exception as e:
                     log.warning(f"Ошибка {symbol} {tf}: {e}")
 
-                await asyncio.sleep(0.1)  # rate limit
+                await asyncio.sleep(0.3)  # rate limit
 
     finally:
         await exchange.close()
