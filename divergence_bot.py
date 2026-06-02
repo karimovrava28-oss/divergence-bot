@@ -209,7 +209,16 @@ def find_divergences(df: pd.DataFrame) -> list[dict]:
         ind_lows,    ind_highs    = get_pivots(ind)
 
         # ── БЫЧЬЯ дивергенция: цена ↓↓, индикатор ↑↑ ──
-        common_lows = sorted(set(price_lows) & set(ind_lows))
+        common_lows = []
+
+for p in price_lows:
+    for i in ind_lows:
+        if abs(p - i) <= 3:
+            common_lows.append(p)
+            break
+
+common_lows = sorted(common_lows)
+
         for i in range(1, len(common_lows)):
             i1, i2 = common_lows[i - 1], common_lows[i]
             if i2 - i1 < PIVOT_ORDER * 2:
@@ -229,7 +238,16 @@ def find_divergences(df: pd.DataFrame) -> list[dict]:
                     })
 
         # ── МЕДВЕЖЬЯ дивергенция: цена ↑↑, индикатор ↓↓ ──
-        common_highs = sorted(set(price_highs) & set(ind_highs))
+        common_highs = []
+
+for p in price_highs:
+    for i in ind_highs:
+        if abs(p - i) <= 3:
+            common_highs.append(p)
+            break
+
+common_highs = sorted(common_highs)
+
         for i in range(1, len(common_highs)):
             i1, i2 = common_highs[i - 1], common_highs[i]
             if i2 - i1 < PIVOT_ORDER * 2:
