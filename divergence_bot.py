@@ -290,6 +290,8 @@ async def scan(bot: Bot):
                     df  = await fetch_ohlcv(exchange, symbol, tf)
                     df  = add_indicators(df)
                     sigs = find_divergences(df)
+                    
+                    print(symbol, tf, "signals:", len(sigs))
 
                     for sig in sigs:
                         # Антиспам ключ
