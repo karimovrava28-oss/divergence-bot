@@ -221,13 +221,17 @@ common_lows = sorted(common_lows)
 
         for i in range(1, len(common_lows)):
             i1, i2 = common_lows[i - 1], common_lows[i]
+            
             if i2 - i1 < PIVOT_ORDER * 2:
                 continue
+                
             price_down = close.iloc[i2] < close.iloc[i1]
             ind_up     = ind.iloc[i2]   > ind.iloc[i1]
+            
             if price_down and ind_up:
                 # Фильтр RSI: желательно быть ниже 45
                 rsi_ok = df["rsi"].iloc[i2] < 45 if indicator == "rsi" else True
+                
                 if rsi_ok:
                     signals.append({
                         "type":      "🟢 БЫЧЬЯ",
@@ -250,12 +254,16 @@ common_highs = sorted(common_highs)
 
         for i in range(1, len(common_highs)):
             i1, i2 = common_highs[i - 1], common_highs[i]
+            
             if i2 - i1 < PIVOT_ORDER * 2:
                 continue
+                
             price_up  = close.iloc[i2] > close.iloc[i1]
             ind_down  = ind.iloc[i2]   < ind.iloc[i1]
+            
             if price_up and ind_down:
                 rsi_ok = df["rsi"].iloc[i2] > 55 if indicator == "rsi" else True
+                
                 if rsi_ok:
                     signals.append({
                         "type":      "🔴 МЕДВЕЖЬЯ",
