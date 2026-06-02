@@ -298,7 +298,7 @@ async def scan(bot: Bot):
                             continue
 
                         # Отправляем только если дивер на последних 3 барах
-                        if sig["bar_idx"] >= len(df) - 3:
+                        if sig["bar_idx"] >= len(df) - 10:
                             text = format_signal(symbol, tf, sig, df)
                             await bot.send_message(chat_id=CHAT_ID, text=text)
                             sent_signals.add(key)
